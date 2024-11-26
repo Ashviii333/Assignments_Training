@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bookshelf - Explore</title>
+  <link rel="icon" type="image/png" href="logo_bookshelf.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('homepage_bg.jpg') no-repeat center center/cover; /* Set the background image */
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+    }
+
+    header img {
+      height: 40px;
+    }
+
+    header h1 {
+      text-align: center;
+      flex-grow: 1;
+      color: #a86032; 
+    }
+
+    
+    main {
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8); 
+    }
+
+    .category {
+      margin-bottom: 40px;
+    }
+
+    .category h2 {
+      color: #007bff;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .book-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .book-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      width: 200px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .book-item img {
+      width: 100%;
+      height: auto;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .book-item h3 {
+      font-size: 16px;
+      color: #007bff;
+      margin: 5px 0;
+    }
+
+    .book-item a {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 14px;
+      display: block;
+      margin-top: 10px;
+    }
+
+  
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <header>
+    <img src="logo_bookshelf.png" alt="Logo">
+    <h1>The Bookshelf</h1>
+  </header>
+
+  
+  <main>
+    <h1>Your Selected Books</h1>
+    <div id="book-list"></div>
+  </main>
+
+  
+  <footer>
+    <p>&copy; 2020-2024 thebookshelf.com</p>
+    <p>
+      <a href="#">Contact Us</a> | 
+      <a href="#">Privacy Policy</a> | 
+      <a href="#">Conditions of Use</a>
+    </p>
+  </footer>
+
+  <script>
+    const books = {
+      Fiction: [
+        { title: "The Great Gatsby", img: "book.jpg", link: "#" },
+        { title: "To Kill a Mockingbird", img: "book.jpg", link: "#" },
+        { title: "Pride and Prejudice", img: "book.jpg", link: "#" }
+      ],
+      "Non-Fiction": [
+        { title: "Sapiens", img: "book.jpg", link: "#" },
+        { title: "Educated", img: "book.jpg", link: "#" },
+        { title: "Becoming", img: "book.jpg", link: "#" }
+      ],
+      Novels: [
+        { title: "The Alchemist", img: "book.jpg", link: "#" },
+        { title: "Catcher in the Rye", img: "book.jpg", link: "#" },
+        { title: "Life of Pi", img: "book.jpg", link: "#" }
+      ],
+      Science: [
+        { title: "A Brief History of Time", img: "book.jpg", link: "#" },
+        { title: "Cosmos", img: "book.jpg", link: "#" },
+        { title: "The Selfish Gene", img: "book.jpg", link: "#" }
+      ]
+    };
+
+    
+    const userData = JSON.parse(localStorage.getItem('userData'));
+
+    
+    const container = document.getElementById('book-list');
+
+    
+    if (userData) {
+      userData.categories.forEach(category => {
+        if (books[category]) {
+          const categorySection = document.createElement('div');
+          categorySection.className = 'category';
+          
+          const categoryTitle = document.createElement('h2');
+          categoryTitle.textContent = category;
+          categorySection.appendChild(categoryTitle);
+
+          
+          const bookList = document.createElement('div');
+          bookList.className = 'book-list';
+
+          books[category].forEach(book => {
+            const bookItem = document.createElement('div');
+            bookItem.className = 'book-item';
+            bookItem.innerHTML = `  
+              <img src="${book.img}" alt="${book.title}">
+              <h3>${book.title}</h3>
+              <a href="${book.link}">More Details</a>
+            `;
+            bookList.appendChild(bookItem);
+          });
+
+          
+          categorySection.appendChild(bookList);
+
+          
+          container.appendChild(categorySection);
+        }
+      });
+    } else {
+      container.innerHTML = '<p>No books to display. Please log in or register.</p>';
+    }
+  </script>
+
+</body>
+</html>

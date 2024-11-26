@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bookshelf - Register</title>
+  <link rel="icon" type="image/png" href="logo_bookshelf.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url(homepage_bg.jpg) no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    main {
+      width: 90%;
+      max-width: 400px;
+      padding: 10px;
+      background-color: white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: auto;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .header-container img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    label, input {
+      margin: 6px 0;
+      width: 100%;
+    }
+
+    input {
+      padding: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error-message {
+      color: red;
+    }
+
+    .form-container div {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .form-container label {
+      flex: 1 1 48%;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="header-container">
+      <img src="logo_bookshelf.png" alt="Logo">
+      <h2>Register Here!</h2>
+    </div>
+    <form id="registration-form" class="form-container">
+      <label for="name">Name:</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+      
+      <label for="age">Age:</label>
+      <input type="number" id="age" placeholder="Enter your age" required>
+      
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+
+      <label for="categories">Select Categories:</label>
+      <div>
+        <label><input type="checkbox" value="Fiction"> Fiction</label>
+        <label><input type="checkbox" value="Non-Fiction"> Non-Fiction</label>
+        <label><input type="checkbox" value="Novels"> Novels</label>
+        <label><input type="checkbox" value="Science"> Science</label>
+      </div>
+      
+      <button type="submit">Register</button>
+    </form>
+  </main>
+  <script>
+    document.getElementById('registration-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const name = document.getElementById('name').value;
+      const age = document.getElementById('age').value;
+      const email = document.getElementById('email').value;
+      const categories = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(checkbox => checkbox.value);
+
+      // Validate categories
+      if (!categories.length) {
+        alert('Please select at least one category.');
+        return;
+      }
+
+      // Age Validation: Should be between 10 and 80
+      if (age < 10 || age > 80) {
+        alert('Age should be between 10 and 80.');
+        return;
+      }
+
+      // Email Uniqueness Validation
+      const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+      const emailExists = existingUsers.some(user => user.email === email);
+      if (emailExists) {
+        alert('This email is already registered. Please use a different email.');
+        return;
+      }
+
+      // Save user data to localStorage
+      const newUser = { name, age, email, categories };
+      existingUsers.push(newUser);
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+
+      // Save user data for future use (if needed)
+      localStorage.setItem('userData', JSON.stringify({ name, age, email, categories }));
+
+      // Confirmation message and redirect
+      alert('Registration Successful!');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
