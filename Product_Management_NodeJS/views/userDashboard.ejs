@@ -1,0 +1,23 @@
+<h1>User Dashboard</h1>
+<form action="/user/search" method="GET">
+    <div>
+        <label for="search-name">Search by Name:</label>
+        <input type="text" id="search-name" name="name" placeholder="Enter product name">
+    </div>
+    <div>
+        <label for="search-category">Search by Category:</label>
+        <input type="text" id="search-category" name="category" placeholder="Enter category">
+    </div>
+    <button type="submit">Search</button>
+</form>
+
+
+<% if (products.length === 0) { %>
+    <p>No products found matching your search criteria.</p>
+<% } else { %>
+    <ul>
+        <% products.forEach(product => { %>
+            <li><%= product.name %> - <%= product.category %> - $<%= product.price %></li>
+        <% }) %>
+    </ul>
+<% } %>
